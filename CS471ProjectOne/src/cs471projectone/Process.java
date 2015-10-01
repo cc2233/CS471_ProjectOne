@@ -16,12 +16,15 @@ public class Process implements Comparable {
     int priority;
     String pName;
     
+    int pRunCount; //run count for Process
+    
     //default constructor
     Process()
     {
         pID = 0;
         priority = 0; 
         pName = "No Name";
+        pRunCount = 0;
     }
 
     //constructor
@@ -30,6 +33,7 @@ public class Process implements Comparable {
         pID = pIDx;
         priority = priorityx;
         pName = pNamex;
+        pRunCount = 0;
     }
     
     
@@ -56,7 +60,9 @@ public class Process implements Comparable {
         if(!(o instanceof Process))
             throw new ClassCastException("Process object expected");
     
-        return (((Process)(o)).priority - this.priority);
-   
+        int ret = (((Process)(o)).priority - this.priority);
+        if(ret != 0) return ret;
+        
+        return ( this.pRunCount - ((Process)(o)).pRunCount );
     }
 }

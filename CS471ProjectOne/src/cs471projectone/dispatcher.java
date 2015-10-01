@@ -363,35 +363,39 @@ public class dispatcher extends javax.swing.JFrame {
     private void butBlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butBlockActionPerformed
         // Block a running process
 
-        if (queueReady.isEmpty()) //cannot block the last remaining running process
+        if (runningProc == null) //cannot block the last remaining running process
         {
-            JOptionPane.showMessageDialog(null, "Cannot block all processes!", "CANNOT BLOCK", JOptionPane.WARNING_MESSAGE);
-        } else if (runningProc != null && !queueReady.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No process to block!", "CANNOT BLOCK", JOptionPane.WARNING_MESSAGE);
+        } 
+        
+        else 
+        {
             ListBlocked.add(runningProc); //moving running process to Blocked
-            runningProc = queueReady.poll(); //moving top of queue to running
+            runningProc = null;
+            runProc();
 
             updateGUI();
         }
-
-
     }//GEN-LAST:event_butBlockActionPerformed
 
     private void butYieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butYieldActionPerformed
         // stop (not block) currently running process and Run next high-priority process
-        if (queueReady.isEmpty()) //cannot yield if there is no more in queueReady
+        if (runningProc == null) //cannot yield if there is no more in queueReady
         {
-            JOptionPane.showMessageDialog(null, "Cannot yield! Ready queue empty!", "CANNOT YIELD", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Cannot yield! No running process!", "CANNOT YIELD", JOptionPane.WARNING_MESSAGE);
         }
         
-        else if (runningProc != null) {
+        else  
+        {
             txtPid.setText("");
             txtPname.setText("");
             txtPstate.setText("");
 
             Process temp = runningProc;
-
-            runningProc = queueReady.poll(); //switching running process
             queueReady.add(temp); //moving running process to Ready
+            
+            runningProc = null;
+            runProc();
         }
         updateGUI();
     }//GEN-LAST:event_butYieldActionPerformed
@@ -403,13 +407,16 @@ public class dispatcher extends javax.swing.JFrame {
 
         try {
 
-            readFromFile(inputFilePath, queueReady);
+            readFromFile(inputFilePath, queueReady, ListBlocked, runningProc);
 
         } catch (FileNotFoundException ef) {
         } catch (IOException ei) {
         }
 
-        runningProc = queueReady.poll();
+        //queueReady.element().pRunCount++;
+        runningProc = null;
+        runProc();
+        
         updateGUI();
 
     }//GEN-LAST:event_butLoadActionPerformed
@@ -560,7 +567,7 @@ public class dispatcher extends javax.swing.JFrame {
             System.out.println(temp.toString());
 
             String listEntry = Integer.toString(temp.pID) + " " + temp.pName;
-            listReady.add(listEntry);
+            listReady.add(temp.toString());
         }
 
         if (ListBlocked != null) {
@@ -568,20 +575,27 @@ public class dispatcher extends javax.swing.JFrame {
             while (it.hasNext()) {
                 Process temp = it.next();
                 String listEntry2 = Integer.toString(temp.pID) + " " + temp.pName;
-                listBlocked.add(listEntry2);
+                listBlocked.add(temp.toString());
             }
         }
 
         if (runningProc != null) {
+
+            System.out.println(runningProc.toString() + " pRunCount = " + runningProc.pRunCount);
+            
             String listEntry3 = Integer.toString(runningProc.pID) + " " + runningProc.pName;
-            listRunning.add(listEntry3);
+            listRunning.add(runningProc.toString());
         }
     }
 
     @SuppressWarnings("empty-statement")
-    public void readFromFile(String filePath, PriorityQueue<Process> q)
+    public void readFromFile(String filePath, PriorityQueue<Process> q, List<Process> l, Process p)
             throws FileNotFoundException, IOException, NullPointerException {
         q.clear();
+        l.clear();
+        p = null;
+        
+        
         Scanner readIn = new Scanner(new FileInputStream(filePath));
         //FileInputStream fileIn = new FileInputStream(filePath);
         //BufferedReader buff = new BufferedReader(new InputStreamReader(fileIn));
@@ -601,6 +615,16 @@ public class dispatcher extends javax.swing.JFrame {
 
     }
 
+    
+    public void runProc()
+    {
+        if (runningProc == null && !queueReady.isEmpty())
+        {
+            runningProc = queueReady.poll();
+            runningProc.pRunCount++;
+            
+        }
+    }
     /**
      * @param args the command line arguments
      */
