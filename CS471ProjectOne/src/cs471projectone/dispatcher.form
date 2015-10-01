@@ -232,7 +232,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
-            <Property name="text" type="java.lang.String" value="(Process ID , Process Name ) from highest to lowest priority"/>
+            <Property name="text" type="java.lang.String" value="( Process ID , Priority , Process Name )"/>
           </Properties>
         </Component>
       </SubComponents>

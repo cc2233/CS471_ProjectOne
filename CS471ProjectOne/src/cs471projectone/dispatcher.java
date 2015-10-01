@@ -131,7 +131,7 @@ public class dispatcher extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("(Process ID , Process Name ) from highest to lowest priority");
+        jLabel6.setText("( Process ID , Priority , Process Name )");
 
         javax.swing.GroupLayout statusLayout = new javax.swing.GroupLayout(status);
         status.setLayout(statusLayout);
