@@ -40,8 +40,8 @@ public class Process implements Comparable {
     public String toString()
     {
         String ret  = Integer.toString(this.pID);
-        ret += (" " + Integer.toString(this.priority));
-        ret += (" " + pName);
+        ret += ("  " + Integer.toString(this.priority));
+        ret += ("  " + pName);
         
         return ret;
     }

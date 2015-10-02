@@ -26,7 +26,7 @@ import javax.swing.*;
 public class dispatcher extends javax.swing.JFrame {
 
     //input file "  .txt"
-    public final String inputFilePath = "C:\\Users\\Scar\\Documents\\NetBeansProjects\\CS471ProjectOne\\processes_A.txt";
+    public final String inputFilePath = "C:\\Users\\Scar\\Documents\\NetBeansProjects\\CS471ProjectOne\\processes_B.txt";
 
     PriorityQueue<Process> queueReady = new PriorityQueue<>();
     List<Process> ListBlocked = new ArrayList<Process>();
@@ -55,6 +55,8 @@ public class dispatcher extends javax.swing.JFrame {
         listRunning = new java.awt.List();
         listBlocked = new java.awt.List();
         jLabel6 = new javax.swing.JLabel();
+        lblBlocked1 = new javax.swing.JLabel();
+        listTerminated = new java.awt.List();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -64,6 +66,10 @@ public class dispatcher extends javax.swing.JFrame {
         txtPstate = new javax.swing.JTextField();
         butReset = new javax.swing.JButton();
         txtPname = new javax.swing.JTextField();
+        butAddProcess = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        txtPriority = new javax.swing.JTextField();
+        butTerminate = new javax.swing.JButton();
         butBlock = new javax.swing.JButton();
         butYield = new javax.swing.JButton();
         butLoad = new javax.swing.JButton();
@@ -74,23 +80,23 @@ public class dispatcher extends javax.swing.JFrame {
 
         status.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 102, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Complete System Status");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        lblReady.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblReady.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblReady.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblReady.setText("Ready");
         lblReady.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        lblBlocked.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblBlocked.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblBlocked.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblBlocked.setText("Blocked");
         lblBlocked.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        lblRunning.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblRunning.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblRunning.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRunning.setText("Running");
         lblRunning.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -133,6 +139,23 @@ public class dispatcher extends javax.swing.JFrame {
 
         jLabel6.setText("( Process ID , Priority , Process Name )");
 
+        lblBlocked1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblBlocked1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblBlocked1.setText("Terminated");
+        lblBlocked1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        listTerminated.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        listTerminated.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listTerminatedMouseClicked(evt);
+            }
+        });
+        listTerminated.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listTerminatedActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout statusLayout = new javax.swing.GroupLayout(status);
         status.setLayout(statusLayout);
         statusLayout.setHorizontalGroup(
@@ -151,7 +174,9 @@ public class dispatcher extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblBlocked, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(listBlocked, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(listBlocked, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblBlocked1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(listTerminated, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(18, 18, 18)
                         .addGroup(statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(listRunning, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
@@ -175,19 +200,26 @@ public class dispatcher extends javax.swing.JFrame {
                     .addComponent(lblBlocked, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(listReady, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                    .addComponent(listReady, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(listRunning, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(listBlocked, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(statusLayout.createSequentialGroup()
+                        .addComponent(listBlocked, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBlocked1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(listTerminated, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
+
+        statusLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {listBlocked, listTerminated});
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setFocusTraversalPolicyProvider(true);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 102, 0));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Process Status");
+        jLabel2.setText("Process");
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel3.setText("Process#");
@@ -210,6 +242,7 @@ public class dispatcher extends javax.swing.JFrame {
             }
         });
 
+        butReset.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         butReset.setText("Reset");
         butReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -217,46 +250,79 @@ public class dispatcher extends javax.swing.JFrame {
             }
         });
 
-        txtPname.setEditable(false);
         txtPname.setToolTipText("");
+
+        butAddProcess.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        butAddProcess.setText("Add Process");
+        butAddProcess.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butAddProcessActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Priority (1 or 2 or 3:highest)");
+
+        txtPriority.setToolTipText("");
+
+        butTerminate.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        butTerminate.setText("Terminate this Process");
+        butTerminate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butTerminateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtPname)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPstate, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPid, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(butReset, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPriority)
+                    .addComponent(txtPname, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(77, 77, 77))
+                    .addComponent(txtPid)
+                    .addComponent(butReset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                    .addComponent(butAddProcess, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtPstate)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(butTerminate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
+                .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPriority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPstate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addGap(18, 18, 18)
                 .addComponent(butReset)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(butAddProcess)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(butTerminate)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         butBlock.setBackground(new java.awt.Color(255, 153, 51));
@@ -287,7 +353,7 @@ public class dispatcher extends javax.swing.JFrame {
             }
         });
 
-        butLoad.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        butLoad.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         butLoad.setText("Load");
         butLoad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -321,17 +387,20 @@ public class dispatcher extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(butExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(butExit, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(butBlock, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(butLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(butLoad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(butYield, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(butUnblock, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(status, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -339,13 +408,12 @@ public class dispatcher extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(butLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(105, 105, 105)
+                                .addGap(13, 13, 13)
                                 .addComponent(butBlock, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(butYield, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -353,8 +421,9 @@ public class dispatcher extends javax.swing.JFrame {
                                 .addComponent(butUnblock, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(butExit)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                        .addComponent(butExit))
+                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -368,7 +437,7 @@ public class dispatcher extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No process to block!", "CANNOT BLOCK", JOptionPane.WARNING_MESSAGE);
         } 
         
-        else 
+        else
         {
             ListBlocked.add(runningProc); //moving running process to Blocked
             runningProc = null;
@@ -392,10 +461,11 @@ public class dispatcher extends javax.swing.JFrame {
             txtPstate.setText("");
 
             Process temp = runningProc;
-            queueReady.add(temp); //moving running process to Ready
             
+            queueReady.add(temp); 
             runningProc = null;
             runProc();
+            
         }
         updateGUI();
     }//GEN-LAST:event_butYieldActionPerformed
@@ -403,7 +473,9 @@ public class dispatcher extends javax.swing.JFrame {
     private void butLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butLoadActionPerformed
         //Load processes from a .txt file
 
-        listReady.removeAll(); //first, list is cleared
+        
+        listTerminated.removeAll();
+        updateGUI();
 
         try {
 
@@ -444,7 +516,11 @@ public class dispatcher extends javax.swing.JFrame {
             { //finding matching PID from ListBlocked
                 Process temp = iter.next();
                 if (temp.pID == Integer.parseInt(blocked.substring(0, 4))) {
-                    queueReady.add(temp);
+                    
+                    if(runningProc == null) //if there is no runningProc, unblocked process becomes runningProc
+                        runningProc = temp;
+                    else
+                        queueReady.add(temp);
                     
                     iter.remove(); //removing from Blocked
                     
@@ -502,6 +578,7 @@ public class dispatcher extends javax.swing.JFrame {
                     txtPid.setText(Integer.toString(temp.pID));
                     txtPname.setText(temp.pName);
                     txtPstate.setText("Ready");
+                    txtPriority.setText(Integer.toString(temp.priority));
                 }
             }
         }
@@ -516,7 +593,6 @@ public class dispatcher extends javax.swing.JFrame {
         
         
         if (ListBlocked.isEmpty()) {
-
         } else {
             String selected = listBlocked.getSelectedItem();
             int selectedPID = Integer.parseInt(selected.substring(0, 4));
@@ -528,6 +604,7 @@ public class dispatcher extends javax.swing.JFrame {
                     txtPid.setText(Integer.toString(temp.pID));
                     txtPname.setText(temp.pName);
                     txtPstate.setText("Blocked");
+                    txtPriority.setText(Integer.toString(temp.priority));
                 }
             }
         }
@@ -539,6 +616,7 @@ public class dispatcher extends javax.swing.JFrame {
         txtPid.setText(Integer.toString(runningProc.pID));
         txtPname.setText(runningProc.pName);
         txtPstate.setText("Running");
+        txtPriority.setText(Integer.toString(runningProc.priority));
 
 
     }//GEN-LAST:event_listRunningMouseClicked
@@ -551,15 +629,168 @@ public class dispatcher extends javax.swing.JFrame {
         txtPstate.setText("");
     }//GEN-LAST:event_butResetActionPerformed
 
+    @SuppressWarnings("empty-statement")
+    private void butAddProcessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butAddProcessActionPerformed
+        // adds a new process to queue         
+        int lastPID = 0; //last pID of existing processes
+        {
+            Iterator<Process> it = queueReady.iterator();
+            while (it.hasNext()) {
+                int tempid = it.next().pID;
+                if (tempid > lastPID) {
+                    lastPID = tempid;
+                }
+            }
+
+            Iterator<Process> it2 = ListBlocked.iterator();
+            while (it2.hasNext()) 
+            {
+                int tempid = it2.next().pID;
+                if (tempid > lastPID) {
+                    lastPID = tempid;
+                }
+            }
+
+            if(runningProc != null)
+            {
+                if (runningProc.pID > lastPID) {
+                    lastPID = runningProc.pID;
+                }
+            }
+            else //if there is no runningProc
+            {
+                lastPID = 3000;
+            }
+            
+            if(listTerminated.getItemCount() != 0) //if there's any Terminated
+            {
+                for (int i = 0; i < listTerminated.getItemCount(); ++i) 
+                {
+                    int terminatedID = Integer.parseInt((listTerminated.getItem(i)).substring(0, 4));
+                    if (terminatedID > lastPID) 
+                    {
+                        lastPID = terminatedID;
+                    }
+                }
+            }
+        }
+
+        
+        
+        String newProcName = "noname";
+        if(txtPname.getText() != null && (!txtPname.getText().equals(""))) //get name for new process
+           newProcName = txtPname.getText();
+        
+        int newPriority = 1; //if user input priority is an invalid number (not 1 or 2 or 3) then automatically set to 1
+        if(txtPriority.getText() != null && (txtPriority.getText().equals("1") || txtPriority.getText().equals("2") || txtPriority.getText().equals("3"))) //get priority for new process
+            newPriority = Integer.parseInt(txtPriority.getText());
+        
+        int newProcID = lastPID + 1;
+        
+        if( newProcName != "noname" && newProcName != "" && (txtPid.getText().equals("") || txtPid.getText() == null) )
+        {
+            Process toAdd = new Process(newProcID, newPriority, newProcName);
+            queueReady.add(toAdd);
+            if(runningProc == null) //if there is no runningProc, start running right away
+                runProc();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Invalid process name OR Duplicate process ID!", "CANNOT ADD PROCESS", JOptionPane.WARNING_MESSAGE);
+        } 
+            
+        
+        updateGUI();
+        
+    }//GEN-LAST:event_butAddProcessActionPerformed
+
+    private void butTerminateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butTerminateActionPerformed
+        // Terminate process whose status is displayed
+        // and display terminated process in listTerminated box
+        boolean success = false;
+        
+        int toTerminateID = 0;
+        if(txtPid.getText() == null || txtPid.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "No process to terminate!", "CANNOT TERMINATE", JOptionPane.WARNING_MESSAGE);
+            return;
+        } 
+
+        else
+            toTerminateID = Integer.parseInt(txtPid.getText());
+        
+        if(txtPstate.getText().equals("Ready")) //if it is in queueReady
+        {
+            Iterator<Process> it = queueReady.iterator();
+            while(it.hasNext())
+            {
+                Process temp = it.next();
+                if(temp.pID == toTerminateID)
+                {
+                    it.remove(); //removing found element
+                    listTerminated.add(temp.toString()); //display in Terminated
+                    success = true;
+                }
+            } updateGUI();
+        }
+        
+        else if(txtPstate.getText().equals("Blocked")) //if it is in ListBlocked
+        {
+            Iterator<Process> it2 = ListBlocked.iterator();
+            Process temp;
+            while(it2.hasNext())
+            {
+                temp = it2.next();
+                if(temp.pID == toTerminateID)
+                {
+                    listTerminated.add(temp.toString());
+                    it2.remove();
+                    success = true;
+                }
+            } updateGUI();
+        }
+        
+        else if(txtPstate.getText().equals("Running")) //if it is runningProc
+        {
+            Process temp = runningProc;
+            runningProc = null;
+            listTerminated.add(temp.toString());
+            runProc();
+            success = true;
+            updateGUI();
+        } 
+        
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Cannot terminate, process not found!", "CANNOT TERMINATE", JOptionPane.WARNING_MESSAGE);
+        } 
+        
+        if(success = false)
+        {
+            JOptionPane.showMessageDialog(null, "Cannot terminate, process not found!", "CANNOT TERMINATE", JOptionPane.WARNING_MESSAGE);
+        } 
+        
+    }//GEN-LAST:event_butTerminateActionPerformed
+
+    private void listTerminatedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listTerminatedMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listTerminatedMouseClicked
+
+    private void listTerminatedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listTerminatedActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listTerminatedActionPerformed
+
     //updates all GUI lists
     public void updateGUI() {
         //clearing all lists and text fields
         listReady.removeAll();
         listBlocked.removeAll();
         listRunning.removeAll();
+        //listTerminated.removeAll();
         txtPid.setText("");
         txtPname.setText("");
         txtPstate.setText("");
+        txtPriority.setText("");
 
         Iterator<Process> iter = queueReady.iterator();
         while (iter.hasNext()) {
@@ -597,8 +828,6 @@ public class dispatcher extends javax.swing.JFrame {
         
         
         Scanner readIn = new Scanner(new FileInputStream(filePath));
-        //FileInputStream fileIn = new FileInputStream(filePath);
-        //BufferedReader buff = new BufferedReader(new InputStreamReader(fileIn));
 
         while (readIn.hasNext()) {
             String lineRead = readIn.nextLine();
@@ -662,10 +891,12 @@ public class dispatcher extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton butAddProcess;
     private javax.swing.JButton butBlock;
     private javax.swing.JButton butExit;
     private javax.swing.JButton butLoad;
     private javax.swing.JButton butReset;
+    private javax.swing.JButton butTerminate;
     private javax.swing.JButton butUnblock;
     private javax.swing.JButton butYield;
     private javax.swing.JLabel jLabel1;
@@ -674,16 +905,20 @@ public class dispatcher extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblBlocked;
+    private javax.swing.JLabel lblBlocked1;
     private javax.swing.JLabel lblReady;
     private javax.swing.JLabel lblRunning;
     private java.awt.List listBlocked;
     private java.awt.List listReady;
     private java.awt.List listRunning;
+    private java.awt.List listTerminated;
     private javax.swing.JPanel status;
     private javax.swing.JTextField txtPid;
     private javax.swing.JTextField txtPname;
+    private javax.swing.JTextField txtPriority;
     private javax.swing.JTextField txtPstate;
     // End of variables declaration//GEN-END:variables
 
